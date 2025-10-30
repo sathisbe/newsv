@@ -1,0 +1,85 @@
+import Head from "next/head";
+import Link from "next/link";
+import PostCard from "../../components/PostCard";
+import Sidebar from "../../components/Sidebar";
+
+export async function getStaticPaths() {
+  const API =
+    process.env.NEXT_PUBLIC_WORDPRESS_API ||
+    "https://newsvtamil.com/wp-json/wp/v2";
+  const res = await fetch(`${API}/posts?per_page=1`);
+  const totalPages = res.headers.get("X-WP-TotalPages");
+  const paths = Array.from({ length: Number(totalPages) - 1 }, (_, i) => ({
+    params: { page: String(i + 2) },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps({ params }) {
+  const API =
+    process.env.NEXT_PUBLIC_WORDPRESS_API ||
+    "https://newsvtamil.com/wp-json/wp/v2";
+  const perPage = 10;
+  const page = params.page || 1;
+  const res = await fetch(`${API}/posts?per_page=${perPage}&page=${page}&_embed`);
+  const totalPages = res.headers.get("X-WP-TotalPages");
+  const posts = await res.json();
+
+  if (!posts.length) return { notFound: true };
+
+  return {
+    props: { posts, page: Number(page), totalPages: Number(totalPages) },
+    revalidate: 60,
+  };
+}
+
+export default function PaginatedHome({ posts, page, totalPages }) {
+  const siteUrl = "https://newsvtamil.com";
+  const siteName = "NewsV Tamil";
+  const title = `${siteName} — பக்கம் ${page} — தமிழ் செய்திகள், இந்தியா, உலகம்`;
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
+      <div className="container site-inner">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 py-6">
+          <main className="lg:col-span-2">
+            <div className="space-y-6">
+              {posts.map((p) => (
+                <PostCard key={p.id} post={p} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex justify-center gap-3 mt-8">
+              {page > 1 && (
+                <Link
+                  href={page === 2 ? "/" : `/page/${page - 1}`}
+                  className="px-4 py-2 border rounded bg-white hover:bg-gray-100"
+                >
+                  ← Prev
+                </Link>
+              )}
+              {page < totalPages && (
+                <Link
+                  href={`/page/${page + 1}`}
+                  className="px-4 py-2 border rounded bg-white hover:bg-gray-100"
+                >
+                  Next →
+                </Link>
+              )}
+            </div>
+          </main>
+
+          <aside className="lg:col-span-1">
+            <Sidebar posts={posts} />
+          </aside>
+        </div>
+      </div>
+    </>
+  );
+}
