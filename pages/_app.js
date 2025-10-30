@@ -1,22 +1,22 @@
-// /pages/_app.js
-import "../styles/globals.css";
 import Layout from "../components/Layout";
+import "../styles/globals.css";
 import Head from "next/head";
 import Script from "next/script";
 
 export default function App({ Component, pageProps }) {
   return (
     <>
-      {/* ✅ Basic Meta */}
+      {/* ✅ Meta & Page Title */}
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>NewsV Tamil</title>
       </Head>
 
-      {/* ✅ Google Analytics */}
+      {/* ✅ Google Analytics (gtag.js) */}
       <Script
-        strategy="afterInteractive"
+        async
         src="https://www.googletagmanager.com/gtag/js?id=G-QQ2FNJ0P98"
+        strategy="afterInteractive"
       />
       <Script
         id="ga-setup"
@@ -29,6 +29,15 @@ export default function App({ Component, pageProps }) {
             gtag('config', 'G-QQ2FNJ0P98');
           `,
         }}
+      />
+
+      {/* ✅ Google AdSense Auto Ads */}
+      <Script
+        id="adsense-script"
+        strategy="afterInteractive"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8044572563880113"
+        crossOrigin="anonymous"
       />
 
       {/* ✅ Layout Wrapper */}
