@@ -1,43 +1,37 @@
-import Layout from "../components/Layout";
+// /pages/_app.js
 import "../styles/globals.css";
+import Layout from "../components/Layout";
 import Head from "next/head";
+import Script from "next/script";
 
 export default function App({ Component, pageProps }) {
   return (
     <>
+      {/* ✅ Basic Meta */}
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-
-        {/* ✅ Google Analytics (gtag.js) */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-QQ2FNJ0P98"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-QQ2FNJ0P98');
-            `,
-          }}
-        />
-
-        {/* ✅ Google AdSense Auto Ads */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8044572563880113"
-          crossOrigin="anonymous"
-        ></script>
-
         <title>NewsV Tamil</title>
       </Head>
 
+      {/* ✅ Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-QQ2FNJ0P98"
+      />
+      <Script
+        id="ga-setup"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QQ2FNJ0P98');
+          `,
+        }}
+      />
+
+      {/* ✅ Layout Wrapper */}
       <Layout>
         <Component {...pageProps} />
       </Layout>
