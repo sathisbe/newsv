@@ -40,21 +40,4 @@ a{ color: var(--accent); }
     }
   }
 }
-/* 🧱 Prevent ad gaps or shifts */
-body > div[id^="google_ads_iframe_"],
-body > ins.adsbygoogle[data-anchor-status],
-body > div[id^="google_auto"] {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  display: none !important;
-}
-
-/* Keep header above any injected ad */
-header, .site-header, #sticky-header {
-  position: relative !important;
-  z-index: 1000 !important;
-}
 
