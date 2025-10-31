@@ -11,15 +11,20 @@ export default function App({ Component, pageProps }) {
       if (loaded) return;
       loaded = true;
 
-      const script = document.createElement("script");
-      script.src =
-        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8044572563880113";
-      script.async = true;
-      script.crossOrigin = "anonymous";
-      document.head.appendChild(script);
+      // ⏳ Delay slightly to let header/logo fully render
+      setTimeout(() => {
+        const script = document.createElement("script");
+        script.src =
+          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8044572563880113";
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        document.head.appendChild(script);
+
+        console.log("✅ Google AdSense Auto Ads script injected safely");
+      }, 1500); // delay 1.5s (prevents early layout shift)
     };
 
-    // Load on scroll or user interaction
+    // 🖱 Load after user interaction (scroll, click, or touch)
     window.addEventListener("scroll", loadAdsense, { once: true });
     window.addEventListener("click", loadAdsense, { once: true });
     window.addEventListener("touchstart", loadAdsense, { once: true });
@@ -51,10 +56,12 @@ export default function App({ Component, pageProps }) {
         }}
       />
 
-      {/* ✅ Layout Wrapper */}
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      {/* ✅ Wrap everything in a container to isolate header from auto ads */}
+      <div id="site-wrapper">
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </div>
     </>
   );
 }
