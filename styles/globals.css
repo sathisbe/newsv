@@ -40,4 +40,13 @@ a{ color: var(--accent); }
     }
   }
 }
+header, .site-header, nav {
+  position: relative;
+  z-index: 10;
+}
+ins.adsbygoogle {
+  display: block !important;
+  z-index: 1;
+}
+
 
