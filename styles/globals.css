@@ -40,13 +40,21 @@ a{ color: var(--accent); }
     }
   }
 }
-header, .site-header, nav {
-  position: relative;
-  z-index: 10;
-}
-ins.adsbygoogle {
-  display: block !important;
-  z-index: 1;
+/* 🧱 Prevent Auto Ads layout shift around header/logo */
+body > div[id^="google_ads_iframe_"],
+body > ins.adsbygoogle[data-anchor-status],
+body > div[id^="google_auto"] {
+  display: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
+/* 🧭 Keep header always on top */
+header, .site-header, #sticky-header {
+  position: relative !important;
+  z-index: 1000 !important;
+}
 
